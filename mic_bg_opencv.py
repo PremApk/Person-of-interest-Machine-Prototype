@@ -29,10 +29,9 @@ def callback(recognizer, audio):
                 print("you said: " + outp)
         if (outp=="can you hear me"):
                 print("Yes")
-        if (outp=="exit"):#this works
+        if (outp=="exit"):
                 val=1
                 print("Exiting...")
-                
         if (outp=="put text"):
                 val=2
         if (outp=="refresh"):
@@ -54,6 +53,7 @@ r = sr.Recognizer()
 m = sr.Microphone()
 cap = cv2.VideoCapture(0)
 val=0
+#Loading necessary images and cascade classifier
 imgsq=cv2.imread("Admin2.jpg")
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 with m as source:
@@ -65,10 +65,12 @@ stop_listening = r.listen_in_background(m, callback)
 while True: 
         ret,img=cap.read()
         if(val==2):
+                #Just a dummy response message
                 cv2.putText(img,"I can hear you",(30,80),cv2.FONT_HERSHEY_SIMPLEX,1.5,(0,255,255),2)
         if(val==8):
                 faces = face_cascade.detectMultiScale(img, 1.3, 5)
                 for (x,y,w,h) in faces:
+                        #Adding the rectangular frame for face detection
                         roi_color = img[y:y+h, x:x+w]
                         rect=img[y+h/2-100:y+h/2+100,x+w/2-100:x+w/2+100]
                         cv2.addWeighted(rect,1,imgsq,1,0,rect)
@@ -76,6 +78,7 @@ while True:
         if(val==9):
                 faces = face_cascade.detectMultiScale(img, 1.3, 5)
                 for (x,y,w,h) in faces:
+                        #To Add Admin text to the rectangular face detection
                         roi_color = img[y:y+h, x:x+w]
                         rect=img[y+h/2-100:y+h/2+100,x+w/2-100:x+w/2+100]
                         cv2.addWeighted(rect,1,imgsq,1,0,rect)
